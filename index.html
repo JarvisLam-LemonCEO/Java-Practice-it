@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Browse Java practice questions and solutions by chapter and topic." />
+    <meta name="theme-color" content="#0f172a" />
+    <title>Java Practice Library</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: '#0f172a',
+              cream: '#f7f5ef',
+              ember: '#ea580c',
+              mist: '#e8eef2'
+            },
+            fontFamily: {
+              sans: ['Manrope', 'ui-sans-serif', 'system-ui'],
+              mono: ['DM Mono', 'ui-monospace', 'monospace']
+            },
+            boxShadow: {
+              lift: '0 18px 45px -24px rgba(15, 23, 42, .28)'
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="min-h-screen bg-cream font-sans text-ink antialiased">
+    <div class="grain" aria-hidden="true"></div>
+    <header id="site-header" class="sticky top-0 z-40 border-b border-slate-200/80 bg-cream/90 backdrop-blur-xl">
+      <nav class="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 py-4 sm:px-8" aria-label="Main navigation">
+        <a href="#/" class="group flex items-center gap-3" aria-label="Java Practice Library home">
+          <span class="grid h-10 w-10 place-items-center rounded-xl bg-ink text-sm font-extrabold text-white shadow-lg shadow-slate-900/15 transition-transform group-hover:-rotate-3">J</span>
+          <span>
+            <span class="block text-sm font-extrabold leading-none tracking-tight">JAVA PRACTICE</span>
+            <span class="mt-1 block text-[10px] font-bold uppercase tracking-[.2em] text-slate-500">Solution Library</span>
+          </span>
+        </a>
+        <div class="flex items-center gap-1 rounded-full border border-slate-200 bg-white/70 p-1 shadow-sm">
+          <a data-nav="home" href="#/" class="nav-link rounded-full px-4 py-2 text-sm font-bold transition">Home</a>
+          <a data-nav="questions" href="#/questions" class="nav-link rounded-full px-4 py-2 text-sm font-bold transition">Questions</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="app" class="relative min-h-[calc(100vh-72px)]" tabindex="-1"></main>
+
+    <footer id="site-footer" class="border-t border-slate-200 bg-white/50">
+      <div class="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <p>Java Practice Library · Built for focused study.</p>
+        <p id="footer-count"></p>
+      </div>
+    </footer>
+
+    <div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 translate-y-4 rounded-full bg-ink px-5 py-3 text-sm font-bold text-white opacity-0 shadow-xl transition-all" role="status" aria-live="polite"></div>
+
+    <script src="/data/questions.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

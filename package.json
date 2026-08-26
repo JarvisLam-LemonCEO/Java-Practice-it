@@ -1,0 +1,10 @@
+{
+  "name": "java-practice-library",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "generate": "node scripts/generate-data.mjs",
+    "dev": "python3 -m http.server 4173",
+    "build": "node scripts/build.mjs"
+  }
+}
