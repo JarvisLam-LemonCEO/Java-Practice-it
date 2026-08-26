@@ -5,8 +5,6 @@ A private, searchable study website for Java questions, textbook exercises, and 
 ## Live Website
 [Open Java Practice Library](https://java-practice-it.vercel.app/)
 
-> [!WARNING]
-> **Private study edition.** The Exercises and Solutions sections contain supplied instructor material. Keep the repository and any deployment private, and do not publish or redistribute the included source material.
 
 ## Features
 
