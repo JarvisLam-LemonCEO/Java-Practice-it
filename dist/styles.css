@@ -124,6 +124,65 @@ body {
 .solution-html sup { vertical-align: super; font-size: .72em; }
 .solution-html sub { vertical-align: sub; font-size: .72em; }
 
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background: #020617;
+  color: #e2e8f0;
+}
+
+html.dark #site-header {
+  border-color: rgba(51, 65, 85, .9);
+  background: rgba(2, 6, 23, .94);
+}
+
+html.dark #site-footer {
+  border-color: #334155;
+  background: rgba(15, 23, 42, .75);
+}
+
+html.dark .nav-link { color: #94a3b8; }
+html.dark .nav-link:hover { color: #f8fafc; }
+html.dark .nav-link.active { background: #f8fafc; color: #0f172a; }
+html.dark .grain { opacity: .04; filter: invert(1); }
+
+html.dark .bg-white { background-color: #0f172a !important; }
+html.dark [class*="bg-white/"] { background-color: rgba(15, 23, 42, .82) !important; }
+html.dark .bg-cream { background-color: #020617 !important; }
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 { background-color: #1e293b !important; }
+html.dark .bg-orange-50,
+html.dark [class*="bg-orange-50/"] { background-color: rgba(124, 45, 18, .35) !important; }
+html.dark .bg-orange-100 { background-color: rgba(154, 52, 18, .55) !important; }
+html.dark .bg-amber-50 { background-color: #422006 !important; }
+html.dark .bg-amber-100 { background-color: #78350f !important; }
+html.dark .bg-sky-50 { background-color: #082f49 !important; }
+
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-300 { border-color: #334155 !important; }
+html.dark .border-orange-100,
+html.dark .border-orange-200 { border-color: #9a3412 !important; }
+html.dark .border-amber-200 { border-color: #92400e !important; }
+html.dark .border-sky-200 { border-color: #0369a1 !important; }
+
+html.dark .text-ink { color: #f8fafc !important; }
+html.dark .text-slate-700,
+html.dark .text-slate-600,
+html.dark .text-slate-500 { color: #cbd5e1 !important; }
+html.dark .text-slate-400 { color: #94a3b8 !important; }
+html.dark .text-slate-300 { color: #cbd5e1 !important; }
+html.dark .text-amber-950,
+html.dark .text-amber-900,
+html.dark .text-amber-700 { color: #fde68a !important; }
+html.dark .text-sky-950 { color: #bae6fd !important; }
+html.dark .solution-html { color: #cbd5e1; }
+html.dark input,
+html.dark select { color: #e2e8f0; }
+html.dark input::placeholder { color: #64748b; }
+
 .fade-up {
   animation: fadeUp .45s ease both;
 }
@@ -147,7 +206,14 @@ body {
     margin: 16mm;
   }
 
-  body {
+  html,
+  html.dark {
+    color-scheme: light;
+    background: white !important;
+  }
+
+  body,
+  html.dark body {
     background: white !important;
     color: black !important;
     font-size: 10.5pt;
@@ -219,6 +285,108 @@ body {
   .token-string,
   .token-comment,
   .token-number {
+    color: black !important;
+  }
+
+  html.dark .print-shell,
+  html.dark .question-shell {
+    background: white !important;
+    color: black !important;
+  }
+
+  html.dark .print-shell .question-print-card,
+  html.dark .question-shell .question-print-card,
+  html.dark .print-shell .bg-white,
+  html.dark .question-shell .bg-white,
+  html.dark .print-shell [class*="bg-white/"],
+  html.dark .question-shell [class*="bg-white/"] {
+    background: white !important;
+  }
+
+  html.dark .print-shell .bg-orange-50,
+  html.dark .question-shell .bg-orange-50,
+  html.dark .print-shell [class*="bg-orange-50/"],
+  html.dark .question-shell [class*="bg-orange-50/"] {
+    background: #fff7ed !important;
+  }
+
+  html.dark .print-shell .bg-orange-100,
+  html.dark .question-shell .bg-orange-100 {
+    background: #ffedd5 !important;
+  }
+
+  html.dark .print-shell .bg-slate-50,
+  html.dark .question-shell .bg-slate-50,
+  html.dark .print-shell .bg-slate-100,
+  html.dark .question-shell .bg-slate-100 {
+    background: #f1f5f9 !important;
+  }
+
+  html.dark .print-shell .bg-amber-100,
+  html.dark .question-shell .bg-amber-100 {
+    background: #fef3c7 !important;
+  }
+
+  html.dark .print-shell .border-slate-100,
+  html.dark .question-shell .border-slate-100,
+  html.dark .print-shell .border-slate-200,
+  html.dark .question-shell .border-slate-200,
+  html.dark .print-shell .border-slate-300,
+  html.dark .question-shell .border-slate-300 {
+    border-color: #cbd5e1 !important;
+  }
+
+  html.dark .print-shell .border-orange-100,
+  html.dark .question-shell .border-orange-100,
+  html.dark .print-shell .border-orange-200,
+  html.dark .question-shell .border-orange-200 {
+    border-color: #fed7aa !important;
+  }
+
+  html.dark .print-shell .text-ink,
+  html.dark .question-shell .text-ink {
+    color: #0f172a !important;
+  }
+
+  html.dark .print-shell .text-slate-700,
+  html.dark .question-shell .text-slate-700 {
+    color: #334155 !important;
+  }
+
+  html.dark .print-shell .text-slate-600,
+  html.dark .question-shell .text-slate-600 {
+    color: #475569 !important;
+  }
+
+  html.dark .print-shell .text-slate-500,
+  html.dark .question-shell .text-slate-500 {
+    color: #64748b !important;
+  }
+
+  html.dark .print-shell .text-slate-400,
+  html.dark .question-shell .text-slate-400 {
+    color: #94a3b8 !important;
+  }
+
+  html.dark .print-shell .text-ember,
+  html.dark .question-shell .text-ember {
+    color: #ea580c !important;
+  }
+
+  html.dark .print-shell .text-amber-900,
+  html.dark .question-shell .text-amber-900 {
+    color: #78350f !important;
+  }
+
+  html.dark .print-shell .solution-html,
+  html.dark .question-shell .solution-html {
+    background: white !important;
+    color: #334155 !important;
+  }
+
+  html.dark .print-shell .code-wrap,
+  html.dark .question-shell .code-wrap {
+    background: #f8fafc !important;
     color: black !important;
   }
 }

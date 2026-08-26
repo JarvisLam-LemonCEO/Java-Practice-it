@@ -10,9 +10,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem('java-practice-theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const darkMode = savedTheme ? savedTheme === 'dark' : prefersDark;
+          document.documentElement.classList.toggle('dark', darkMode);
+          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', darkMode ? '#020617' : '#0f172a');
+        } catch (_) {}
+      })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
@@ -46,11 +58,15 @@
             <span class="mt-1 block text-[10px] font-bold uppercase tracking-[.2em] text-slate-500">Solution Library</span>
           </span>
         </a>
-        <div class="grid grid-cols-4 items-center gap-1 rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-sm sm:flex sm:rounded-full">
+        <div class="grid grid-cols-5 items-center gap-1 rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-sm sm:flex sm:rounded-full">
           <a data-nav="home" href="#/" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Home</a>
           <a data-nav="questions" href="#/questions" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Questions</a>
           <a data-nav="exercises" href="#/exercises" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Exercises</a>
           <a data-nav="solutions" href="#/solutions" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Solutions</a>
+          <button type="button" data-action="toggle-theme" class="nav-link grid h-9 place-items-center rounded-xl px-2 transition sm:w-10 sm:rounded-full" aria-label="Toggle dark mode" title="Toggle light or dark mode">
+            <svg class="h-4 w-4 dark:hidden" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+            <svg class="hidden h-4 w-4 dark:block" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+          </button>
         </div>
       </nav>
     </header>

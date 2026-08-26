@@ -202,7 +202,8 @@
             <div class="mt-8 flex flex-wrap gap-3">
               <a href="#/questions" class="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-orange-950/25 transition hover:-translate-y-0.5 hover:bg-orange-400">Browse all questions <span class="h-4 w-4">${icons.arrow}</span></a>
               <a href="#/exercises" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-white/15">Browse textbook exercises <span class="h-4 w-4">${icons.arrow}</span></a>
-              <button data-action="print-all" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-white/15"><span class="h-4 w-4">${icons.download}</span> Download all as PDF</button>
+              <button data-action="print-all" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-white/15"><span class="h-4 w-4">${icons.download}</span> Questions PDF</button>
+              <button data-action="print-all-exercises" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-white/15"><span class="h-4 w-4">${icons.download}</span> Exercises PDF</button>
             </div>
           </div>
           <div class="relative mt-12 grid max-w-2xl grid-cols-3 gap-3 border-t border-white/10 pt-7">
@@ -484,6 +485,33 @@
     if (autoPrint) setTimeout(() => window.print(), 350);
   }
 
+  function renderPrintAllExercises(autoPrint = false) {
+    document.title = 'Complete Textbook Exercises · Java Practice Library';
+    app.innerHTML = `
+      <section class="print-shell mx-auto max-w-5xl px-5 pb-16 pt-8 sm:px-8">
+        <div class="no-print mb-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div><h1 class="text-xl font-extrabold">Complete exercises and solutions PDF</h1><p class="mt-1 text-sm text-slate-500">${exercises.length} exercise prompts with their matched solutions. Choose “Save as PDF” in the print dialog.</p></div>
+          <div class="flex flex-wrap gap-2"><a href="#/" class="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-500 hover:bg-slate-100">Back home</a><button data-action="print-now" class="inline-flex items-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-sm font-extrabold text-white"><span class="h-4 w-4">${icons.download}</span> Print / Save PDF</button></div>
+        </div>
+        <div class="hidden print:block mb-10 border-b-2 border-black pb-6"><h1 class="text-3xl font-bold">Building Java Programs · Exercises and Solutions</h1><p class="mt-2">Complete collection · ${exercises.length} exercises and solutions</p></div>
+        <div class="space-y-8">${exercises.map((exercise, exerciseIndex) => `
+          <article class="question-print-card rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+            <p class="text-xs font-extrabold uppercase tracking-widest text-ember">${escapeHtml(exercise.chapter)} · ${escapeHtml(exercise.chapterTitle)} · ${escapeHtml(exercise.topic)} · Source page ${exercise.pdfPage}</p>
+            <h2 class="mt-3 font-mono text-2xl font-bold">${exerciseIndex + 1}. ${escapeHtml(exercise.title)}</h2>
+            <h3 class="mt-7 text-xs font-extrabold uppercase tracking-widest">Exercise</h3>
+            <div class="prompt-text mt-3 rounded-xl bg-orange-50 p-5 text-sm leading-6">${escapeHtml(exercise.prompt)}</div>
+            <h3 class="mt-7 text-xs font-extrabold uppercase tracking-widest">Solution</h3>
+            <div class="mt-3 space-y-4">${exercise.solutionVariants.map((variant, index) => `
+                  <div class="solution-variant">
+                    ${exercise.solutionVariants.length > 1 ? `<p class="mb-2 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Solution variant ${index + 1}</p>` : ''}
+                    <div class="solution-html">${variant.html}</div>
+                  </div>`).join('')}</div>
+          </article>`).join('')}</div>
+      </section>`;
+    enhanceSolutionCode();
+    if (autoPrint) setTimeout(() => window.print(), 450);
+  }
+
   function renderNotFound() {
     document.title = 'Not found · Java Practice Library';
     app.innerHTML = `<section class="mx-auto grid min-h-[70vh] max-w-3xl place-items-center px-5 text-center"><div><p class="font-mono text-7xl font-bold text-orange-200">404</p><h1 class="mt-4 text-3xl font-extrabold">Question not found</h1><p class="mt-3 text-slate-500">That exercise may have moved or the link is incomplete.</p><a href="#/questions" class="mt-7 inline-block rounded-xl bg-ink px-5 py-3 text-sm font-bold text-white">Browse questions</a></div></section>`;
@@ -510,6 +538,7 @@
     else if (route.name === 'exercise') renderExerciseDetail(decodeURIComponent(route.parts[0] || ''), 'exercise');
     else if (route.name === 'solution') renderExerciseDetail(decodeURIComponent(route.parts[0] || ''), 'solution');
     else if (route.name === 'print' && route.parts[0] === 'all') renderPrintAll(location.search.includes('autoprint=1'));
+    else if (route.name === 'print' && route.parts[0] === 'exercises') renderPrintAllExercises(location.search.includes('autoprint=1'));
     else renderNotFound();
 
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -555,6 +584,15 @@
     if (!target) return;
     const action = target.dataset.action;
 
+    if (action === 'toggle-theme') {
+      const darkMode = !document.documentElement.classList.contains('dark');
+      document.documentElement.classList.toggle('dark', darkMode);
+      target.setAttribute('aria-label', darkMode ? 'Use light mode' : 'Use dark mode');
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', darkMode ? '#020617' : '#0f172a');
+      try {
+        localStorage.setItem('java-practice-theme', darkMode ? 'dark' : 'light');
+      } catch (_) {}
+    }
     if (action === 'scroll-chapter') {
       document.getElementById(target.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -619,6 +657,10 @@
     if (action === 'print-all') {
       location.hash = '#/print/all';
       setTimeout(() => window.print(), 400);
+    }
+    if (action === 'print-all-exercises') {
+      location.hash = '#/print/exercises';
+      setTimeout(() => window.print(), 500);
     }
   });
 
