@@ -1,12 +1,10 @@
-<div align="center">
-  <img src="./favicon.svg" width="72" height="72" alt="Java Practice Library logo" />
 
   # Java Practice Library
 
   A searchable, chapter-based collection of Java programming questions and solutions.
 
   **328 questions Â· 18 chapter groups Â· Vercel ready**
-</div>
+
 
 ## About
 
