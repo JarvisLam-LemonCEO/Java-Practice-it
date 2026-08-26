@@ -213,10 +213,7 @@
           </div>
         </div>
 
-        <div class="mt-5 flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-950 sm:flex-row sm:items-center sm:justify-between">
-          <p><strong>Private study edition.</strong> The Exercises and Solutions sections contain supplied instructor material and should not be published.</p>
-          <a href="#/exercises" class="shrink-0 font-extrabold text-amber-900 underline decoration-amber-400 underline-offset-4">Open paired exercises</a>
-        </div>
+      
 
         <div class="mt-10">
           ${filtersBar({ context: 'home', search: state.homeSearch, topic: state.homeTopic, count: filtered.length })}
