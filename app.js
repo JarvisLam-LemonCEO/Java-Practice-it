@@ -214,7 +214,6 @@
         </div>
 
       
-
         <div class="mt-10">
           ${filtersBar({ context: 'home', search: state.homeSearch, topic: state.homeTopic, count: filtered.length })}
         </div>
