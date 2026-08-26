@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Browse Java practice questions and solutions by chapter and topic." />
+    <meta name="description" content="Private Java study library with questions, textbook exercises, and matched solutions." />
     <meta name="theme-color" content="#0f172a" />
     <title>Java Practice Library</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -36,8 +36,9 @@
   </head>
   <body class="min-h-screen bg-cream font-sans text-ink antialiased">
     <div class="grain" aria-hidden="true"></div>
-    <header id="site-header" class="sticky top-0 z-40 border-b border-slate-200/80 bg-cream/90 backdrop-blur-xl">
-      <nav class="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 py-4 sm:px-8" aria-label="Main navigation">
+    <header id="site-header" class="sticky top-0 z-40 border-b border-slate-200/80 bg-cream/95 backdrop-blur-xl">
+      <div class="bg-amber-100 px-4 py-1.5 text-center text-[10px] font-extrabold uppercase tracking-[.16em] text-amber-900">Private study copy · Keep this project and its source material private</div>
+      <nav class="mx-auto flex max-w-7xl flex-col items-stretch gap-3 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-8" aria-label="Main navigation">
         <a href="#/" class="group flex items-center gap-3" aria-label="Java Practice Library home">
           <span class="grid h-10 w-10 place-items-center rounded-xl bg-ink text-sm font-extrabold text-white shadow-lg shadow-slate-900/15 transition-transform group-hover:-rotate-3">J</span>
           <span>
@@ -45,9 +46,11 @@
             <span class="mt-1 block text-[10px] font-bold uppercase tracking-[.2em] text-slate-500">Solution Library</span>
           </span>
         </a>
-        <div class="flex items-center gap-1 rounded-full border border-slate-200 bg-white/70 p-1 shadow-sm">
-          <a data-nav="home" href="#/" class="nav-link rounded-full px-4 py-2 text-sm font-bold transition">Home</a>
-          <a data-nav="questions" href="#/questions" class="nav-link rounded-full px-4 py-2 text-sm font-bold transition">Questions</a>
+        <div class="grid grid-cols-4 items-center gap-1 rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-sm sm:flex sm:rounded-full">
+          <a data-nav="home" href="#/" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Home</a>
+          <a data-nav="questions" href="#/questions" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Questions</a>
+          <a data-nav="exercises" href="#/exercises" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Exercises</a>
+          <a data-nav="solutions" href="#/solutions" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Solutions</a>
         </div>
       </nav>
     </header>
@@ -64,6 +67,7 @@
     <div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 translate-y-4 rounded-full bg-ink px-5 py-3 text-sm font-bold text-white opacity-0 shadow-xl transition-all" role="status" aria-live="polite"></div>
 
     <script src="/data/questions.js"></script>
+    <script src="/data/exercises.js"></script>
     <script src="/app.js"></script>
   </body>
 </html>

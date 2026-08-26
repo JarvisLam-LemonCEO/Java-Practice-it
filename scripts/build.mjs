@@ -8,10 +8,13 @@ const dist = path.join(root, 'dist');
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(path.join(dist, 'data'), { recursive: true });
+await mkdir(path.join(dist, 'private-source'), { recursive: true });
 
 for (const file of ['index.html', 'app.js', 'styles.css', 'favicon.svg']) {
   await cp(path.join(root, file), path.join(dist, file));
 }
 await cp(path.join(root, 'data', 'questions.js'), path.join(dist, 'data', 'questions.js'));
+await cp(path.join(root, 'data', 'exercises.js'), path.join(dist, 'data', 'exercises.js'));
+await cp(path.join(root, 'private-source', 'exercises.pdf'), path.join(dist, 'private-source', 'exercises.pdf'));
 
 console.log('Built static site in dist/.');

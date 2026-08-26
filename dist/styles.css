@@ -98,6 +98,32 @@ body {
   white-space: pre-wrap;
 }
 
+.solution-html {
+  color: #334155;
+  font-size: .9rem;
+  line-height: 1.75;
+}
+
+.solution-html p + p,
+.solution-html pre + p,
+.solution-html p + pre,
+.solution-html ul + pre,
+.solution-html ol + pre {
+  margin-top: 1rem;
+}
+
+.solution-html ul,
+.solution-html ol {
+  margin: .75rem 0;
+  padding-left: 1.5rem;
+}
+
+.solution-html ul { list-style: disc; }
+.solution-html ol { list-style: decimal; }
+.solution-html li + li { margin-top: .35rem; }
+.solution-html sup { vertical-align: super; font-size: .72em; }
+.solution-html sub { vertical-align: sub; font-size: .72em; }
+
 .fade-up {
   animation: fadeUp .45s ease both;
 }
@@ -166,6 +192,13 @@ body {
     font-size: 8pt !important;
     white-space: pre-wrap !important;
     print-color-adjust: exact;
+  }
+
+  .solution-variant,
+  .solution-html {
+    border: 0 !important;
+    background: white !important;
+    padding: 0 !important;
   }
 
   .code-wrap code {

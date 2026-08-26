@@ -1,5 +1,6 @@
 (() => {
   const questions = Array.isArray(window.JAVA_QUESTIONS) ? window.JAVA_QUESTIONS : [];
+  const exercises = Array.isArray(window.JAVA_EXERCISES) ? window.JAVA_EXERCISES : [];
   const app = document.querySelector('#app');
   const toast = document.querySelector('#toast');
   const footerCount = document.querySelector('#footer-count');
@@ -10,6 +11,12 @@
     questionSearch: '',
     questionTopic: 'all',
     questionChapter: 'all',
+    exerciseSearch: '',
+    exerciseTopic: 'all',
+    exerciseChapter: 'all',
+    solutionSearch: '',
+    solutionTopic: 'all',
+    solutionChapter: 'all',
     expanded: new Set()
   };
 
@@ -20,8 +27,15 @@
     number: q.chapterNumber
   }])).values()].sort((a, b) => a.number - b.number);
   const topics = [...new Set(questions.map((q) => q.topic))].sort();
+  const exerciseChapters = [...new Map(exercises.map((exercise) => [exercise.chapterId, {
+    id: exercise.chapterId,
+    label: exercise.chapter,
+    title: exercise.chapterTitle,
+    number: exercise.chapterNumber
+  }])).values()].sort((a, b) => a.number - b.number);
+  const exerciseTopics = [...new Set(exercises.map((exercise) => exercise.topic))].sort();
 
-  footerCount.textContent = `${questions.length} questions across ${chapters.length} chapters`;
+  footerCount.textContent = `${questions.length} questions · ${exercises.length} paired textbook exercises`;
 
   const icons = {
     search: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
@@ -86,10 +100,21 @@
       && (chapter === 'all' || question.chapterId === chapter);
   }
 
+  function matchesExercise(exercise, search, topic = 'all', chapter = 'all') {
+    const query = search.trim().toLowerCase();
+    const haystack = `${exercise.displayNumber} ${exercise.title} ${exercise.name} ${exercise.prompt} ${exercise.solutionText} ${exercise.topic} ${exercise.chapterTitle}`.toLowerCase();
+    return (!query || haystack.includes(query))
+      && (topic === 'all' || exercise.topic === topic)
+      && (chapter === 'all' || exercise.chapterId === chapter);
+  }
+
   function setActiveNav(route) {
     document.querySelectorAll('[data-nav]').forEach((link) => {
       const isQuestions = route.startsWith('questions') || route.startsWith('question');
-      link.classList.toggle('active', link.dataset.nav === (isQuestions ? 'questions' : 'home'));
+      const isExercises = route.startsWith('exercises') || route.startsWith('exercise');
+      const isSolutions = route.startsWith('solutions') || route.startsWith('solution');
+      const active = isQuestions ? 'questions' : isExercises ? 'exercises' : isSolutions ? 'solutions' : 'home';
+      link.classList.toggle('active', link.dataset.nav === active);
     });
   }
 
@@ -112,6 +137,34 @@
           <button data-action="clear-${context}" class="h-12 rounded-xl px-4 text-sm font-bold text-slate-500 transition hover:bg-slate-100 hover:text-ink">Clear</button>
         </div>
         <p class="mt-3 px-1 text-xs font-bold uppercase tracking-[.14em] text-slate-400"><span id="${context}-result-count">${count}</span> results</p>
+      </div>`;
+  }
+
+  function exerciseFiltersBar({ context, search, topic, chapter, count }) {
+    const noun = context === 'solutions' ? 'solutions' : 'exercises';
+    return `
+      <div class="rounded-3xl border border-slate-200 bg-white p-4 shadow-lift sm:p-5">
+        <div class="grid gap-3 lg:grid-cols-[1fr_220px_250px_auto]">
+          <label class="relative block">
+            <span class="sr-only">Search ${noun}</span>
+            <span class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400">${icons.search}</span>
+            <input id="${context}-search" type="search" value="${escapeHtml(search)}" placeholder="Search numbers, prompts, names, or code…" class="search-input h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-semibold outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100" />
+          </label>
+          <label>
+            <span class="sr-only">Filter by topic</span>
+            <select id="${context}-topic" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100">
+              ${selectOptions(exerciseTopics, topic, 'All topics')}
+            </select>
+          </label>
+          <label>
+            <span class="sr-only">Filter by chapter</span>
+            <select id="${context}-chapter" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100">
+              ${selectOptions(exerciseChapters, chapter, 'All chapters')}
+            </select>
+          </label>
+          <button data-action="clear-${context}" class="h-12 rounded-xl px-4 text-sm font-bold text-slate-500 transition hover:bg-slate-100 hover:text-ink">Clear</button>
+        </div>
+        <p class="mt-3 px-1 text-xs font-bold uppercase tracking-[.14em] text-slate-400"><span id="${context}-result-count">${count}</span> ${noun}</p>
       </div>`;
   }
 
@@ -148,14 +201,20 @@
             <p class="mt-6 max-w-2xl text-base font-medium leading-7 text-slate-300 sm:text-lg">Explore every prompt and its source solution. Search the library, focus by topic, and save clean study PDFs whenever you need them.</p>
             <div class="mt-8 flex flex-wrap gap-3">
               <a href="#/questions" class="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-orange-950/25 transition hover:-translate-y-0.5 hover:bg-orange-400">Browse all questions <span class="h-4 w-4">${icons.arrow}</span></a>
+              <a href="#/exercises" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-white/15">Browse textbook exercises <span class="h-4 w-4">${icons.arrow}</span></a>
               <button data-action="print-all" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-white/15"><span class="h-4 w-4">${icons.download}</span> Download all as PDF</button>
             </div>
           </div>
           <div class="relative mt-12 grid max-w-2xl grid-cols-3 gap-3 border-t border-white/10 pt-7">
             <div><strong class="block text-2xl font-extrabold sm:text-3xl">${questions.length}</strong><span class="text-xs font-bold uppercase tracking-wider text-slate-400">Questions</span></div>
-            <div><strong class="block text-2xl font-extrabold sm:text-3xl">${chapters.length}</strong><span class="text-xs font-bold uppercase tracking-wider text-slate-400">Chapters</span></div>
-            <div><strong class="block text-2xl font-extrabold sm:text-3xl">${topics.length}</strong><span class="text-xs font-bold uppercase tracking-wider text-slate-400">Topics</span></div>
+            <div><strong class="block text-2xl font-extrabold sm:text-3xl">${exercises.length}</strong><span class="text-xs font-bold uppercase tracking-wider text-slate-400">Exercises</span></div>
+            <div><strong class="block text-2xl font-extrabold sm:text-3xl">${exerciseChapters.length}</strong><span class="text-xs font-bold uppercase tracking-wider text-slate-400">Study sections</span></div>
           </div>
+        </div>
+
+        <div class="mt-5 flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-950 sm:flex-row sm:items-center sm:justify-between">
+          <p><strong>Private study edition.</strong> The Exercises and Solutions sections contain supplied instructor material and should not be published.</p>
+          <a href="#/exercises" class="shrink-0 font-extrabold text-amber-900 underline decoration-amber-400 underline-offset-4">Open paired exercises</a>
         </div>
 
         <div class="mt-10">
@@ -226,6 +285,136 @@
           </div>
         </div>
       </section>`;
+  }
+
+  function renderExerciseDirectory(mode) {
+    const isSolutions = mode === 'solutions';
+    const search = isSolutions ? state.solutionSearch : state.exerciseSearch;
+    const topic = isSolutions ? state.solutionTopic : state.exerciseTopic;
+    const chapterFilter = isSolutions ? state.solutionChapter : state.exerciseChapter;
+    const filtered = exercises.filter((exercise) => matchesExercise(exercise, search, topic, chapterFilter));
+    const grouped = exerciseChapters.map((chapter) => ({
+      ...chapter,
+      exercises: filtered.filter((exercise) => exercise.chapterId === chapter.id)
+    })).filter((chapter) => chapter.exercises.length);
+    const singularRoute = isSolutions ? 'solution' : 'exercise';
+    const previewField = isSolutions ? 'solutionText' : 'prompt';
+
+    document.title = `${isSolutions ? 'Solutions' : 'Exercises'} · Java Practice Library`;
+    app.innerHTML = `
+      <section class="mx-auto max-w-7xl px-5 pb-16 pt-10 sm:px-8 sm:pt-14">
+        <div class="max-w-3xl fade-up">
+          <div class="flex flex-wrap items-center gap-3">
+            <p class="text-xs font-extrabold uppercase tracking-[.18em] text-ember">Building Java Programs · 4th Edition</p>
+            <span class="rounded-full bg-amber-100 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-amber-900">Private study copy</span>
+          </div>
+          <h1 class="mt-3 text-4xl font-extrabold tracking-[-.035em] sm:text-5xl">${isSolutions ? 'Matched solutions' : 'Textbook exercises'}</h1>
+          <p class="mt-4 text-base font-medium leading-7 text-slate-500">${isSolutions ? 'Browse the HTML solutions matched to their corresponding PDF exercises. Each page includes the original prompt for context.' : 'Browse 390 exercise prompts extracted from the supplied PDF. Every exercise opens with its matched HTML solution.'}</p>
+        </div>
+        <div class="mt-8">${exerciseFiltersBar({ context: mode, search, topic, chapter: chapterFilter, count: filtered.length })}</div>
+
+        <div class="mt-10 grid gap-8 lg:grid-cols-[220px_1fr]">
+          <aside class="hidden lg:block">
+            <div class="sticky top-40 rounded-2xl border border-slate-200 bg-white p-4">
+              <p class="px-2 pb-3 text-xs font-extrabold uppercase tracking-[.16em] text-slate-400">On this page</p>
+              <div class="space-y-1">${grouped.map((chapter) => `<button type="button" data-action="scroll-chapter" data-target="${mode}-directory-${chapter.id}" class="flex w-full items-center justify-between rounded-lg px-2 py-2 text-left text-xs font-bold text-slate-500 transition hover:bg-orange-50 hover:text-ember"><span>${escapeHtml(chapter.label)}</span><span>${chapter.exercises.length}</span></button>`).join('')}</div>
+            </div>
+          </aside>
+
+          <div class="space-y-10">
+            ${grouped.length ? grouped.map((chapter) => `
+              <section id="${mode}-directory-${chapter.id}" class="scroll-mt-44">
+                <div class="mb-4 flex items-end justify-between border-b border-slate-200 pb-4">
+                  <div><p class="text-xs font-extrabold uppercase tracking-[.15em] text-ember">${escapeHtml(chapter.label)}</p><h2 class="mt-1 text-2xl font-extrabold tracking-tight">${escapeHtml(chapter.title)}</h2></div>
+                  <span class="text-xs font-bold text-slate-400">${chapter.exercises.length} ${isSolutions ? 'solutions' : 'exercises'}</span>
+                </div>
+                <div class="grid gap-3 sm:grid-cols-2">${chapter.exercises.map((exercise) => `
+                  <a href="#/${singularRoute}/${encodeURIComponent(exercise.id)}" class="group flex min-h-40 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-lift">
+                    <div>
+                      <div class="flex items-center justify-between gap-3"><span class="rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-ember">${escapeHtml(exercise.topic)}</span><span class="h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-ember">${icons.arrow}</span></div>
+                      <h3 class="mt-4 text-sm font-extrabold">${escapeHtml(exercise.title)}</h3>
+                    </div>
+                    <div class="mt-3">
+                      <p class="line-clamp-2 text-xs font-medium leading-5 text-slate-500">${escapeHtml(exercise[previewField].replace(/\s+/g, ' '))}</p>
+                      ${isSolutions && exercise.solutionVariants.length > 1 ? `<p class="mt-2 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">${exercise.solutionVariants.length} solution variants</p>` : ''}
+                    </div>
+                  </a>`).join('')}</div>
+              </section>`).join('') : `<div class="rounded-3xl border border-dashed border-slate-300 bg-white/50 px-6 py-20 text-center"><p class="text-xl font-extrabold">Nothing matches those filters</p><button data-action="clear-${mode}" class="mt-4 rounded-xl bg-ink px-4 py-2 text-sm font-bold text-white">Clear filters</button></div>`}
+          </div>
+        </div>
+      </section>`;
+  }
+
+  function solutionVariantsHtml(exercise, stepNumber = '02') {
+    return `
+      <section id="matched-solution" class="mt-10 scroll-mt-44">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-3"><span class="grid h-8 w-8 place-items-center rounded-lg bg-slate-900 text-xs font-extrabold text-white">${stepNumber}</span><h2 class="text-sm font-extrabold uppercase tracking-[.16em]">Matched solution</h2></div>
+          <button data-action="copy-exercise-solution" data-id="${exercise.id}" class="no-print inline-flex items-center gap-2 text-xs font-bold text-slate-400 transition hover:text-ember"><span class="h-4 w-4">${icons.copy}</span> Copy solution</button>
+        </div>
+        <div class="space-y-5">${exercise.solutionVariants.map((variant, index) => `
+          <div class="solution-variant overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+            ${exercise.solutionVariants.length > 1 ? `<div class="border-b border-slate-200 bg-white px-5 py-3 text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-500">Solution variant ${index + 1}</div>` : ''}
+            <div class="solution-html p-5 sm:p-6">${variant.html}</div>
+          </div>`).join('')}</div>
+      </section>`;
+  }
+
+  function exercisePromptHtml(exercise, stepNumber = '01') {
+    return `
+      <section class="mt-10">
+        <div class="mb-4 flex items-center gap-3"><span class="grid h-8 w-8 place-items-center rounded-lg bg-orange-100 text-xs font-extrabold text-ember">${stepNumber}</span><h2 class="text-sm font-extrabold uppercase tracking-[.16em]">Exercise prompt</h2></div>
+        <div class="prompt-text rounded-2xl border border-orange-100 bg-orange-50/60 p-5 font-medium leading-7 text-slate-700 sm:p-6">${escapeHtml(exercise.prompt)}</div>
+        ${exercise.hasFigureReference ? `<div class="no-print mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-950"><span>This exercise references a figure or diagram from the textbook.</span><a href="/private-source/exercises.pdf#page=${exercise.pdfPage}" target="_blank" rel="noopener" class="font-extrabold underline decoration-sky-400 underline-offset-4">View source page ${exercise.pdfPage}</a></div>` : ''}
+      </section>`;
+  }
+
+  function enhanceSolutionCode() {
+    document.querySelectorAll('.solution-html pre.java').forEach((pre) => {
+      const source = pre.textContent.replace(/^\n|\n$/g, '');
+      pre.className = 'code-wrap overflow-x-auto rounded-xl bg-slate-950 py-5 font-mono text-[13px] leading-6 text-slate-200 shadow-inner';
+      pre.innerHTML = `<code>${highlightJava(source)}</code>`;
+    });
+  }
+
+  function renderExerciseDetail(id, mode) {
+    const index = exercises.findIndex((exercise) => exercise.id === id);
+    if (index < 0) return renderNotFound();
+    const exercise = exercises[index];
+    const previous = exercises[index - 1];
+    const next = exercises[index + 1];
+    const isSolution = mode === 'solution';
+    const route = isSolution ? 'solution' : 'exercise';
+    const directory = isSolution ? 'solutions' : 'exercises';
+    const directoryLabel = isSolution ? 'Solutions' : 'Exercises';
+    const firstSection = isSolution ? solutionVariantsHtml(exercise, '01') : exercisePromptHtml(exercise, '01');
+    const secondSection = isSolution ? exercisePromptHtml(exercise, '02') : solutionVariantsHtml(exercise, '02');
+
+    document.title = `${exercise.title} · ${directoryLabel}`;
+    app.innerHTML = `
+      <section class="question-shell mx-auto max-w-5xl px-5 pb-16 pt-8 sm:px-8 sm:pt-12">
+        <div class="no-print flex flex-wrap items-center justify-between gap-4">
+          <nav class="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-400" aria-label="Breadcrumb"><a href="#/${directory}" class="hover:text-ember">${directoryLabel}</a><span>/</span><span>${escapeHtml(exercise.chapter)}</span><span>/</span><span class="text-slate-600">Exercise ${escapeHtml(exercise.displayNumber)}</span></nav>
+          <div class="flex flex-wrap gap-2"><a href="/private-source/exercises.pdf#page=${exercise.pdfPage}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold shadow-sm transition hover:border-orange-200 hover:text-ember"><span class="h-4 w-4">${icons.file}</span> Source page ${exercise.pdfPage}</a><button data-action="print-exercise" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold shadow-sm transition hover:border-orange-200 hover:text-ember"><span class="h-4 w-4">${icons.download}</span> Export PDF</button></div>
+        </div>
+
+        <article class="question-print-card mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-lift sm:p-10">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded-full bg-orange-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-ember">${escapeHtml(exercise.topic)}</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-slate-500">${escapeHtml(exercise.chapter)} · ${escapeHtml(exercise.chapterTitle)}</span>
+            <span class="rounded-full bg-amber-100 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-amber-900">Private</span>
+          </div>
+          <h1 class="mt-6 text-3xl font-extrabold tracking-tight sm:text-4xl">${escapeHtml(exercise.title)}</h1>
+          ${firstSection}
+          ${secondSection}
+        </article>
+
+        <nav class="no-print mt-6 grid gap-3 sm:grid-cols-2" aria-label="Exercise navigation">
+          ${previous ? `<a href="#/${route}/${encodeURIComponent(previous.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-orange-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">← Previous ${route}</span><span class="mt-2 block truncate text-sm font-bold transition group-hover:text-ember">${escapeHtml(previous.title)}</span></a>` : '<div></div>'}
+          ${next ? `<a href="#/${route}/${encodeURIComponent(next.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 text-right shadow-sm transition hover:border-orange-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">Next ${route} →</span><span class="mt-2 block truncate text-sm font-bold transition group-hover:text-ember">${escapeHtml(next.title)}</span></a>` : ''}
+        </nav>
+      </section>`;
+    enhanceSolutionCode();
   }
 
   function solutionBlock(question) {
@@ -311,11 +500,15 @@
     const route = parseRoute();
     setActiveNav(route.name);
     document.querySelector('#site-header').classList.toggle('print-view', route.name === 'print');
-    if (route.name !== 'question' && route.name !== 'print') document.title = route.name === 'questions' ? 'Questions · Java Practice Library' : 'Java Practice Library';
+    if (!['question', 'exercise', 'solution', 'print'].includes(route.name)) document.title = route.name === 'questions' ? 'Questions · Java Practice Library' : 'Java Practice Library';
 
     if (route.name === 'home') renderHome();
     else if (route.name === 'questions') renderQuestions();
     else if (route.name === 'question') renderQuestion(decodeURIComponent(route.parts[0] || ''));
+    else if (route.name === 'exercises') renderExerciseDirectory('exercises');
+    else if (route.name === 'solutions') renderExerciseDirectory('solutions');
+    else if (route.name === 'exercise') renderExerciseDetail(decodeURIComponent(route.parts[0] || ''), 'exercise');
+    else if (route.name === 'solution') renderExerciseDetail(decodeURIComponent(route.parts[0] || ''), 'solution');
     else if (route.name === 'print' && route.parts[0] === 'all') renderPrintAll(location.search.includes('autoprint=1'));
     else renderNotFound();
 
@@ -328,12 +521,16 @@
     const route = parseRoute();
     if (route.name === 'home') renderHome();
     if (route.name === 'questions') renderQuestions();
+    if (route.name === 'exercises') renderExerciseDirectory('exercises');
+    if (route.name === 'solutions') renderExerciseDirectory('solutions');
     window.scrollTo(0, scrollY);
   }
 
   document.addEventListener('input', (event) => {
     if (event.target.id === 'home-search') state.homeSearch = event.target.value;
     else if (event.target.id === 'questions-search') state.questionSearch = event.target.value;
+    else if (event.target.id === 'exercises-search') state.exerciseSearch = event.target.value;
+    else if (event.target.id === 'solutions-search') state.solutionSearch = event.target.value;
     else return;
     rerenderCurrent();
     const input = document.querySelector(`#${event.target.id}`);
@@ -345,6 +542,10 @@
     if (event.target.id === 'home-topic') state.homeTopic = event.target.value;
     else if (event.target.id === 'questions-topic') state.questionTopic = event.target.value;
     else if (event.target.id === 'questions-chapter') state.questionChapter = event.target.value;
+    else if (event.target.id === 'exercises-topic') state.exerciseTopic = event.target.value;
+    else if (event.target.id === 'exercises-chapter') state.exerciseChapter = event.target.value;
+    else if (event.target.id === 'solutions-topic') state.solutionTopic = event.target.value;
+    else if (event.target.id === 'solutions-chapter') state.solutionChapter = event.target.value;
     else return;
     rerenderCurrent();
   });
@@ -382,6 +583,18 @@
       state.questionChapter = 'all';
       renderQuestions();
     }
+    if (action === 'clear-exercises') {
+      state.exerciseSearch = '';
+      state.exerciseTopic = 'all';
+      state.exerciseChapter = 'all';
+      renderExerciseDirectory('exercises');
+    }
+    if (action === 'clear-solutions') {
+      state.solutionSearch = '';
+      state.solutionTopic = 'all';
+      state.solutionChapter = 'all';
+      renderExerciseDirectory('solutions');
+    }
     if (action === 'copy-code') {
       const question = questions.find((q) => q.id === target.dataset.id);
       if (!question) return;
@@ -392,7 +605,17 @@
         showToast('Copy is unavailable in this browser');
       }
     }
-    if (action === 'print-question' || action === 'print-now') window.print();
+    if (action === 'copy-exercise-solution') {
+      const exercise = exercises.find((item) => item.id === target.dataset.id);
+      if (!exercise) return;
+      try {
+        await navigator.clipboard.writeText(exercise.solutionText);
+        showToast('Matched solution copied');
+      } catch {
+        showToast('Copy is unavailable in this browser');
+      }
+    }
+    if (action === 'print-question' || action === 'print-exercise' || action === 'print-now') window.print();
     if (action === 'print-all') {
       location.hash = '#/print/all';
       setTimeout(() => window.print(), 400);
