@@ -3,8 +3,7 @@
 
   A searchable, chapter-based collection of Java programming questions and solutions.
 
-  **328 questions Â· 18 chapter groups Â· Vercel ready**
-
+## Live Link: 
 
 ## About
 
