@@ -120,20 +120,20 @@
 
   function filtersBar({ context, search, topic, chapter, count }) {
     return `
-      <div class="rounded-3xl border border-slate-200 bg-white p-4 shadow-lift sm:p-5">
+      <div class="apple-filter-bar rounded-3xl border border-slate-200 bg-white p-4 shadow-lift sm:p-5">
         <div class="grid gap-3 ${context === 'questions' ? 'lg:grid-cols-[1fr_220px_250px_auto]' : 'lg:grid-cols-[1fr_240px_auto]'}">
           <label class="relative block">
             <span class="sr-only">Search questions</span>
             <span class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400">${icons.search}</span>
-            <input id="${context}-search" type="search" value="${escapeHtml(search)}" placeholder="Search names, prompts, or code…" class="search-input h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-semibold outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100" />
+            <input id="${context}-search" type="search" value="${escapeHtml(search)}" placeholder="Search names, prompts, or code…" class="search-input h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-semibold outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100" />
           </label>
           <label>
             <span class="sr-only">Filter by topic</span>
-            <select id="${context}-topic" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100">
+            <select id="${context}-topic" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
               ${selectOptions(topics, topic, 'All topics')}
             </select>
           </label>
-          ${context === 'questions' ? `<label><span class="sr-only">Filter by chapter</span><select id="questions-chapter" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100">${selectOptions(chapters, chapter, 'All chapters')}</select></label>` : ''}
+          ${context === 'questions' ? `<label><span class="sr-only">Filter by chapter</span><select id="questions-chapter" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100">${selectOptions(chapters, chapter, 'All chapters')}</select></label>` : ''}
           <button data-action="clear-${context}" class="h-12 rounded-xl px-4 text-sm font-bold text-slate-500 transition hover:bg-slate-100 hover:text-ink">Clear</button>
         </div>
         <p class="mt-3 px-1 text-xs font-bold uppercase tracking-[.14em] text-slate-400"><span id="${context}-result-count">${count}</span> results</p>
@@ -143,22 +143,22 @@
   function exerciseFiltersBar({ context, search, topic, chapter, count }) {
     const noun = context === 'solutions' ? 'solutions' : 'exercises';
     return `
-      <div class="rounded-3xl border border-slate-200 bg-white p-4 shadow-lift sm:p-5">
+      <div class="apple-filter-bar rounded-3xl border border-slate-200 bg-white p-4 shadow-lift sm:p-5">
         <div class="grid gap-3 lg:grid-cols-[1fr_220px_250px_auto]">
           <label class="relative block">
             <span class="sr-only">Search ${noun}</span>
             <span class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400">${icons.search}</span>
-            <input id="${context}-search" type="search" value="${escapeHtml(search)}" placeholder="Search numbers, prompts, names, or code…" class="search-input h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-semibold outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100" />
+            <input id="${context}-search" type="search" value="${escapeHtml(search)}" placeholder="Search numbers, prompts, names, or code…" class="search-input h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-semibold outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100" />
           </label>
           <label>
             <span class="sr-only">Filter by topic</span>
-            <select id="${context}-topic" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100">
+            <select id="${context}-topic" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
               ${selectOptions(exerciseTopics, topic, 'All topics')}
             </select>
           </label>
           <label>
             <span class="sr-only">Filter by chapter</span>
-            <select id="${context}-chapter" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100">
+            <select id="${context}-chapter" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
               ${selectOptions(exerciseChapters, chapter, 'All chapters')}
             </select>
           </label>
@@ -171,7 +171,7 @@
   function questionRow(question, index) {
     return `
       <a href="#/question/${encodeURIComponent(question.id)}" class="group grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-2xl border border-transparent px-3 py-3 transition hover:border-slate-200 hover:bg-white hover:shadow-sm sm:px-4">
-        <span class="grid h-9 w-9 place-items-center rounded-xl bg-slate-100 font-mono text-[11px] font-bold text-slate-500 transition group-hover:bg-orange-100 group-hover:text-ember">${String(index + 1).padStart(2, '0')}</span>
+        <span class="grid h-9 w-9 place-items-center rounded-xl bg-slate-100 font-mono text-[11px] font-bold text-slate-500 transition group-hover:bg-blue-100 group-hover:text-ember">${String(index + 1).padStart(2, '0')}</span>
         <span class="min-w-0">
           <span class="block truncate text-sm font-extrabold text-ink">${escapeHtml(question.filename)}</span>
           <span class="mt-1 block truncate text-xs font-medium text-slate-500">${escapeHtml(question.question.replace(/\s+/g, ' '))}</span>
@@ -190,29 +190,30 @@
 
     app.innerHTML = `
       <section class="mx-auto max-w-7xl px-5 pb-16 pt-8 sm:px-8 sm:pt-12">
-        <div class="hero-grid relative overflow-hidden rounded-[2rem] bg-ink px-6 py-12 text-white shadow-2xl shadow-slate-900/20 sm:px-10 sm:py-16 lg:px-16">
-          <div class="absolute -right-16 -top-24 h-72 w-72 rounded-full bg-orange-500/20 blur-3xl"></div>
-          <div class="relative max-w-3xl fade-up">
-            <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-bold uppercase tracking-[.16em] text-orange-300">
-              <span class="h-1.5 w-1.5 rounded-full bg-orange-400"></span>
+        <div class="apple-hero relative overflow-hidden rounded-[2.25rem] px-6 py-16 sm:px-10 sm:py-24 lg:px-16 lg:py-28">
+          <div class="apple-hero-orb apple-hero-orb-one" aria-hidden="true"></div>
+          <div class="apple-hero-orb apple-hero-orb-two" aria-hidden="true"></div>
+          <div class="relative mx-auto max-w-4xl text-center fade-up">
+            <div class="apple-eyebrow mb-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold">
               Practice It · 4th Edition
             </div>
-            <h1 class="text-4xl font-extrabold leading-[1.05] tracking-[-.04em] sm:text-6xl">Java practice,<br/><span class="text-orange-400">chapter by chapter.</span></h1>
-            <p class="mt-6 max-w-2xl text-base font-medium leading-7 text-slate-300 sm:text-lg">Explore every prompt and its source solution. Search the library, focus by topic, and save clean study PDFs whenever you need them.</p>
-            <div class="mt-8 flex flex-wrap gap-3">
-              <a href="#/questions" class="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-orange-950/25 transition hover:-translate-y-0.5 hover:bg-orange-400">Browse all questions <span class="h-4 w-4">${icons.arrow}</span></a>
-              <a href="#/exercises" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-white/15">Browse textbook exercises <span class="h-4 w-4">${icons.arrow}</span></a>
-              <button data-action="print-all" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-white/15"><span class="h-4 w-4">${icons.download}</span> Questions PDF</button>
-              <button data-action="print-all-exercises" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-white/15"><span class="h-4 w-4">${icons.download}</span> Exercises PDF</button>
+            <h1 class="apple-display text-5xl font-semibold leading-[.98] tracking-[-.055em] sm:text-7xl lg:text-8xl">Learn Java.<br/><span class="apple-gradient-text">One problem at a time.</span></h1>
+            <p class="apple-hero-copy mx-auto mt-7 max-w-2xl text-base font-normal leading-7 sm:text-xl sm:leading-8">A focused library for questions, textbook exercises, and matched solutions. Search quickly, study chapter by chapter, and export clean PDFs whenever you need them.</p>
+            <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
+              <a href="#/questions" class="apple-button apple-button-primary inline-flex items-center gap-2 px-5 py-3 text-sm font-semibold">Browse questions <span class="h-4 w-4">${icons.arrow}</span></a>
+              <a href="#/exercises" class="apple-button apple-button-secondary inline-flex items-center gap-2 px-5 py-3 text-sm font-semibold">View exercises <span class="h-4 w-4">${icons.arrow}</span></a>
+            </div>
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
+              <button data-action="print-all" class="apple-text-link inline-flex items-center gap-1.5"><span class="h-4 w-4">${icons.download}</span> Questions PDF</button>
+              <button data-action="print-all-exercises" class="apple-text-link inline-flex items-center gap-1.5"><span class="h-4 w-4">${icons.download}</span> Exercises PDF</button>
             </div>
           </div>
-          <div class="relative mt-12 grid max-w-2xl grid-cols-3 gap-3 border-t border-white/10 pt-7">
-            <div><strong class="block text-2xl font-extrabold sm:text-3xl">${questions.length}</strong><span class="text-xs font-bold uppercase tracking-wider text-slate-400">Questions</span></div>
-            <div><strong class="block text-2xl font-extrabold sm:text-3xl">${exercises.length}</strong><span class="text-xs font-bold uppercase tracking-wider text-slate-400">Exercises</span></div>
-            <div><strong class="block text-2xl font-extrabold sm:text-3xl">${exerciseChapters.length}</strong><span class="text-xs font-bold uppercase tracking-wider text-slate-400">Study sections</span></div>
+          <div class="apple-stats relative mx-auto mt-14 grid max-w-3xl grid-cols-3 divide-x sm:mt-16">
+            <div class="px-2 text-center sm:px-6"><strong class="block text-2xl font-semibold tracking-tight sm:text-3xl">${questions.length}</strong><span class="mt-1 block text-[11px] font-medium uppercase tracking-[.08em]">Questions</span></div>
+            <div class="px-2 text-center sm:px-6"><strong class="block text-2xl font-semibold tracking-tight sm:text-3xl">${exercises.length}</strong><span class="mt-1 block text-[11px] font-medium uppercase tracking-[.08em]">Exercises</span></div>
+            <div class="px-2 text-center sm:px-6"><strong class="block text-2xl font-semibold tracking-tight sm:text-3xl">${exerciseChapters.length}</strong><span class="mt-1 block text-[11px] font-medium uppercase tracking-[.08em]">Sections</span></div>
           </div>
         </div>
-
       
         <div class="mt-10">
           ${filtersBar({ context: 'home', search: state.homeSearch, topic: state.homeTopic, count: filtered.length })}
@@ -221,7 +222,7 @@
         <div class="mt-10 flex items-end justify-between gap-4">
           <div>
             <p class="text-xs font-extrabold uppercase tracking-[.18em] text-ember">Study path</p>
-            <h2 class="mt-2 text-3xl font-extrabold tracking-tight">Browse by chapter</h2>
+            <h2 class="mt-2 text-3xl font-semibold tracking-[-.025em]">Browse by chapter</h2>
           </div>
           <button data-action="toggle-all" class="hidden text-sm font-bold text-slate-500 hover:text-ember sm:block">Expand all</button>
         </div>
@@ -255,7 +256,7 @@
       <section class="mx-auto max-w-7xl px-5 pb-16 pt-10 sm:px-8 sm:pt-14">
         <div class="max-w-3xl fade-up">
           <p class="text-xs font-extrabold uppercase tracking-[.18em] text-ember">Complete directory</p>
-          <h1 class="mt-3 text-4xl font-extrabold tracking-[-.035em] sm:text-5xl">All Java questions</h1>
+          <h1 class="mt-3 text-4xl font-semibold tracking-[-.04em] sm:text-6xl">All Java questions</h1>
           <p class="mt-4 text-base font-medium leading-7 text-slate-500">Search the full prompt and solution text, then narrow the collection by topic or chapter.</p>
         </div>
         <div class="mt-8">${filtersBar({ context: 'questions', search: state.questionSearch, topic: state.questionTopic, chapter: state.questionChapter, count: filtered.length })}</div>
@@ -263,19 +264,19 @@
           <aside class="hidden lg:block">
             <div class="sticky top-28 rounded-2xl border border-slate-200 bg-white p-4">
               <p class="px-2 pb-3 text-xs font-extrabold uppercase tracking-[.16em] text-slate-400">On this page</p>
-              <div class="space-y-1">${grouped.map((chapter) => `<button type="button" data-action="scroll-chapter" data-target="directory-${chapter.id}" class="flex w-full items-center justify-between rounded-lg px-2 py-2 text-left text-xs font-bold text-slate-500 transition hover:bg-orange-50 hover:text-ember"><span>${escapeHtml(chapter.label)}</span><span>${chapter.questions.length}</span></button>`).join('')}</div>
+              <div class="space-y-1">${grouped.map((chapter) => `<button type="button" data-action="scroll-chapter" data-target="directory-${chapter.id}" class="flex w-full items-center justify-between rounded-lg px-2 py-2 text-left text-xs font-bold text-slate-500 transition hover:bg-blue-50 hover:text-ember"><span>${escapeHtml(chapter.label)}</span><span>${chapter.questions.length}</span></button>`).join('')}</div>
             </div>
           </aside>
           <div class="space-y-10">
             ${grouped.length ? grouped.map((chapter) => `
               <section id="directory-${chapter.id}" class="scroll-mt-28">
                 <div class="mb-4 flex items-end justify-between border-b border-slate-200 pb-4">
-                  <div><p class="text-xs font-extrabold uppercase tracking-[.15em] text-ember">${escapeHtml(chapter.label)}</p><h2 class="mt-1 text-2xl font-extrabold tracking-tight">${escapeHtml(chapter.title)}</h2></div>
+                  <div><p class="text-xs font-extrabold uppercase tracking-[.15em] text-ember">${escapeHtml(chapter.label)}</p><h2 class="mt-1 text-2xl font-semibold tracking-[-.02em]">${escapeHtml(chapter.title)}</h2></div>
                   <span class="text-xs font-bold text-slate-400">${chapter.questions.length} questions</span>
                 </div>
                 <div class="grid gap-3 sm:grid-cols-2">${chapter.questions.map((q) => `
-                  <a href="#/question/${encodeURIComponent(q.id)}" class="group flex min-h-36 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-lift">
-                    <div><div class="flex items-center justify-between gap-3"><span class="rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-ember">${escapeHtml(q.topic)}</span><span class="h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-ember">${icons.arrow}</span></div><h3 class="mt-4 truncate font-mono text-sm font-bold">${escapeHtml(q.filename)}</h3></div>
+                  <a href="#/question/${encodeURIComponent(q.id)}" class="group flex min-h-36 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lift">
+                    <div><div class="flex items-center justify-between gap-3"><span class="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-ember">${escapeHtml(q.topic)}</span><span class="h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-ember">${icons.arrow}</span></div><h3 class="mt-4 truncate font-mono text-sm font-bold">${escapeHtml(q.filename)}</h3></div>
                     <p class="mt-3 line-clamp-2 text-xs font-medium leading-5 text-slate-500">${escapeHtml(q.question.replace(/\s+/g, ' '))}</p>
                   </a>`).join('')}</div>
               </section>`).join('') : `<div class="rounded-3xl border border-dashed border-slate-300 bg-white/50 px-6 py-20 text-center"><p class="text-xl font-extrabold">Nothing matches those filters</p><button data-action="clear-questions" class="mt-4 rounded-xl bg-ink px-4 py-2 text-sm font-bold text-white">Clear filters</button></div>`}
@@ -303,9 +304,9 @@
         <div class="max-w-3xl fade-up">
           <div class="flex flex-wrap items-center gap-3">
             <p class="text-xs font-extrabold uppercase tracking-[.18em] text-ember">Building Java Programs · 4th Edition</p>
-            <span class="rounded-full bg-amber-100 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-amber-900">Private study copy</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-600">Private study copy</span>
           </div>
-          <h1 class="mt-3 text-4xl font-extrabold tracking-[-.035em] sm:text-5xl">${isSolutions ? 'Matched solutions' : 'Textbook exercises'}</h1>
+          <h1 class="mt-3 text-4xl font-semibold tracking-[-.04em] sm:text-6xl">${isSolutions ? 'Matched solutions' : 'Textbook exercises'}</h1>
           <p class="mt-4 text-base font-medium leading-7 text-slate-500">${isSolutions ? 'Browse the HTML solutions matched to their corresponding PDF exercises. Each page includes the original prompt for context.' : 'Browse 390 exercise prompts extracted from the supplied PDF. Every exercise opens with its matched HTML solution.'}</p>
         </div>
         <div class="mt-8">${exerciseFiltersBar({ context: mode, search, topic, chapter: chapterFilter, count: filtered.length })}</div>
@@ -314,7 +315,7 @@
           <aside class="hidden lg:block">
             <div class="sticky top-40 rounded-2xl border border-slate-200 bg-white p-4">
               <p class="px-2 pb-3 text-xs font-extrabold uppercase tracking-[.16em] text-slate-400">On this page</p>
-              <div class="space-y-1">${grouped.map((chapter) => `<button type="button" data-action="scroll-chapter" data-target="${mode}-directory-${chapter.id}" class="flex w-full items-center justify-between rounded-lg px-2 py-2 text-left text-xs font-bold text-slate-500 transition hover:bg-orange-50 hover:text-ember"><span>${escapeHtml(chapter.label)}</span><span>${chapter.exercises.length}</span></button>`).join('')}</div>
+              <div class="space-y-1">${grouped.map((chapter) => `<button type="button" data-action="scroll-chapter" data-target="${mode}-directory-${chapter.id}" class="flex w-full items-center justify-between rounded-lg px-2 py-2 text-left text-xs font-bold text-slate-500 transition hover:bg-blue-50 hover:text-ember"><span>${escapeHtml(chapter.label)}</span><span>${chapter.exercises.length}</span></button>`).join('')}</div>
             </div>
           </aside>
 
@@ -322,13 +323,13 @@
             ${grouped.length ? grouped.map((chapter) => `
               <section id="${mode}-directory-${chapter.id}" class="scroll-mt-44">
                 <div class="mb-4 flex items-end justify-between border-b border-slate-200 pb-4">
-                  <div><p class="text-xs font-extrabold uppercase tracking-[.15em] text-ember">${escapeHtml(chapter.label)}</p><h2 class="mt-1 text-2xl font-extrabold tracking-tight">${escapeHtml(chapter.title)}</h2></div>
+                  <div><p class="text-xs font-extrabold uppercase tracking-[.15em] text-ember">${escapeHtml(chapter.label)}</p><h2 class="mt-1 text-2xl font-semibold tracking-[-.02em]">${escapeHtml(chapter.title)}</h2></div>
                   <span class="text-xs font-bold text-slate-400">${chapter.exercises.length} ${isSolutions ? 'solutions' : 'exercises'}</span>
                 </div>
                 <div class="grid gap-3 sm:grid-cols-2">${chapter.exercises.map((exercise) => `
-                  <a href="#/${singularRoute}/${encodeURIComponent(exercise.id)}" class="group flex min-h-40 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-lift">
+                  <a href="#/${singularRoute}/${encodeURIComponent(exercise.id)}" class="group flex min-h-40 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lift">
                     <div>
-                      <div class="flex items-center justify-between gap-3"><span class="rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-ember">${escapeHtml(exercise.topic)}</span><span class="h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-ember">${icons.arrow}</span></div>
+                      <div class="flex items-center justify-between gap-3"><span class="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-ember">${escapeHtml(exercise.topic)}</span><span class="h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-ember">${icons.arrow}</span></div>
                       <h3 class="mt-4 text-sm font-extrabold">${escapeHtml(exercise.title)}</h3>
                     </div>
                     <div class="mt-3">
@@ -360,8 +361,8 @@
   function exercisePromptHtml(exercise, stepNumber = '01') {
     return `
       <section class="mt-10">
-        <div class="mb-4 flex items-center gap-3"><span class="grid h-8 w-8 place-items-center rounded-lg bg-orange-100 text-xs font-extrabold text-ember">${stepNumber}</span><h2 class="text-sm font-extrabold uppercase tracking-[.16em]">Exercise prompt</h2></div>
-        <div class="prompt-text rounded-2xl border border-orange-100 bg-orange-50/60 p-5 font-medium leading-7 text-slate-700 sm:p-6">${escapeHtml(exercise.prompt)}</div>
+        <div class="mb-4 flex items-center gap-3"><span class="grid h-8 w-8 place-items-center rounded-lg bg-blue-100 text-xs font-extrabold text-ember">${stepNumber}</span><h2 class="text-sm font-extrabold uppercase tracking-[.16em]">Exercise prompt</h2></div>
+        <div class="prompt-text rounded-2xl border border-blue-100 bg-blue-50/60 p-5 font-medium leading-7 text-slate-700 sm:p-6">${escapeHtml(exercise.prompt)}</div>
         ${exercise.hasFigureReference ? `<div class="no-print mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-950"><span>This exercise references a figure or diagram from the textbook.</span><a href="/private-source/exercises.pdf#page=${exercise.pdfPage}" target="_blank" rel="noopener" class="font-extrabold underline decoration-sky-400 underline-offset-4">View source page ${exercise.pdfPage}</a></div>` : ''}
       </section>`;
   }
@@ -392,23 +393,23 @@
       <section class="question-shell mx-auto max-w-5xl px-5 pb-16 pt-8 sm:px-8 sm:pt-12">
         <div class="no-print flex flex-wrap items-center justify-between gap-4">
           <nav class="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-400" aria-label="Breadcrumb"><a href="#/${directory}" class="hover:text-ember">${directoryLabel}</a><span>/</span><span>${escapeHtml(exercise.chapter)}</span><span>/</span><span class="text-slate-600">Exercise ${escapeHtml(exercise.displayNumber)}</span></nav>
-          <div class="flex flex-wrap gap-2"><a href="/private-source/exercises.pdf#page=${exercise.pdfPage}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold shadow-sm transition hover:border-orange-200 hover:text-ember"><span class="h-4 w-4">${icons.file}</span> Source page ${exercise.pdfPage}</a><button data-action="print-exercise" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold shadow-sm transition hover:border-orange-200 hover:text-ember"><span class="h-4 w-4">${icons.download}</span> Export PDF</button></div>
+          <div class="flex flex-wrap gap-2"><a href="/private-source/exercises.pdf#page=${exercise.pdfPage}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold shadow-sm transition hover:border-blue-200 hover:text-ember"><span class="h-4 w-4">${icons.file}</span> Source page ${exercise.pdfPage}</a><button data-action="print-exercise" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold shadow-sm transition hover:border-blue-200 hover:text-ember"><span class="h-4 w-4">${icons.download}</span> Export PDF</button></div>
         </div>
 
         <article class="question-print-card mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-lift sm:p-10">
           <div class="flex flex-wrap items-center gap-2">
-            <span class="rounded-full bg-orange-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-ember">${escapeHtml(exercise.topic)}</span>
+            <span class="rounded-full bg-blue-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-ember">${escapeHtml(exercise.topic)}</span>
             <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-slate-500">${escapeHtml(exercise.chapter)} · ${escapeHtml(exercise.chapterTitle)}</span>
-            <span class="rounded-full bg-amber-100 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-amber-900">Private</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[.13em] text-slate-600">Private</span>
           </div>
-          <h1 class="mt-6 text-3xl font-extrabold tracking-tight sm:text-4xl">${escapeHtml(exercise.title)}</h1>
+          <h1 class="mt-6 text-3xl font-semibold tracking-[-.025em] sm:text-4xl">${escapeHtml(exercise.title)}</h1>
           ${firstSection}
           ${secondSection}
         </article>
 
         <nav class="no-print mt-6 grid gap-3 sm:grid-cols-2" aria-label="Exercise navigation">
-          ${previous ? `<a href="#/${route}/${encodeURIComponent(previous.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-orange-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">← Previous ${route}</span><span class="mt-2 block truncate text-sm font-bold transition group-hover:text-ember">${escapeHtml(previous.title)}</span></a>` : '<div></div>'}
-          ${next ? `<a href="#/${route}/${encodeURIComponent(next.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 text-right shadow-sm transition hover:border-orange-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">Next ${route} →</span><span class="mt-2 block truncate text-sm font-bold transition group-hover:text-ember">${escapeHtml(next.title)}</span></a>` : ''}
+          ${previous ? `<a href="#/${route}/${encodeURIComponent(previous.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">← Previous ${route}</span><span class="mt-2 block truncate text-sm font-bold transition group-hover:text-ember">${escapeHtml(previous.title)}</span></a>` : '<div></div>'}
+          ${next ? `<a href="#/${route}/${encodeURIComponent(next.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 text-right shadow-sm transition hover:border-blue-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">Next ${route} →</span><span class="mt-2 block truncate text-sm font-bold transition group-hover:text-ember">${escapeHtml(next.title)}</span></a>` : ''}
         </nav>
       </section>`;
     enhanceSolutionCode();
@@ -430,19 +431,19 @@
       <section class="question-shell mx-auto max-w-5xl px-5 pb-16 pt-8 sm:px-8 sm:pt-12">
         <div class="no-print flex flex-wrap items-center justify-between gap-4">
           <nav class="flex items-center gap-2 text-xs font-bold text-slate-400" aria-label="Breadcrumb"><a href="#/questions" class="hover:text-ember">Questions</a><span>/</span><span>${escapeHtml(question.chapter)}</span><span>/</span><span class="text-slate-600">${escapeHtml(question.filename)}</span></nav>
-          <button data-action="print-question" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold shadow-sm transition hover:border-orange-200 hover:text-ember"><span class="h-4 w-4">${icons.download}</span> Export PDF</button>
+          <button data-action="print-question" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold shadow-sm transition hover:border-blue-200 hover:text-ember"><span class="h-4 w-4">${icons.download}</span> Export PDF</button>
         </div>
 
         <article class="question-print-card mt-6 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-lift sm:p-10">
           <div class="flex flex-wrap items-center gap-2">
-            <span class="rounded-full bg-orange-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-ember">${escapeHtml(question.topic)}</span>
+            <span class="rounded-full bg-blue-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-ember">${escapeHtml(question.topic)}</span>
             <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.13em] text-slate-500">${escapeHtml(question.chapter)} · ${escapeHtml(question.chapterTitle)}</span>
           </div>
           <h1 class="mt-6 break-words font-mono text-3xl font-bold tracking-tight sm:text-4xl">${escapeHtml(question.filename)}</h1>
 
           <section class="mt-10">
-            <div class="mb-4 flex items-center gap-3"><span class="grid h-8 w-8 place-items-center rounded-lg bg-orange-100 text-xs font-extrabold text-ember">01</span><h2 class="text-sm font-extrabold uppercase tracking-[.16em]">Question</h2></div>
-            <div class="prompt-text rounded-2xl border border-orange-100 bg-orange-50/60 p-5 text-sm font-medium leading-7 text-slate-700 sm:p-6 sm:text-base">${escapeHtml(question.question)}</div>
+            <div class="mb-4 flex items-center gap-3"><span class="grid h-8 w-8 place-items-center rounded-lg bg-blue-100 text-xs font-extrabold text-ember">01</span><h2 class="text-sm font-extrabold uppercase tracking-[.16em]">Question</h2></div>
+            <div class="prompt-text rounded-2xl border border-blue-100 bg-blue-50/60 p-5 text-sm font-medium leading-7 text-slate-700 sm:p-6 sm:text-base">${escapeHtml(question.question)}</div>
             ${!question.hasSourceQuestion ? '<p class="mt-3 text-xs font-semibold text-amber-700">Note: this source file did not contain a leading question comment.</p>' : ''}
           </section>
 
@@ -453,8 +454,8 @@
         </article>
 
         <nav class="no-print mt-6 grid gap-3 sm:grid-cols-2" aria-label="Question navigation">
-          ${previous ? `<a href="#/question/${encodeURIComponent(previous.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-orange-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">← Previous question</span><span class="mt-2 block truncate font-mono text-sm font-bold transition group-hover:text-ember">${escapeHtml(previous.filename)}</span></a>` : '<div></div>'}
-          ${next ? `<a href="#/question/${encodeURIComponent(next.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 text-right shadow-sm transition hover:border-orange-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">Next question →</span><span class="mt-2 block truncate font-mono text-sm font-bold transition group-hover:text-ember">${escapeHtml(next.filename)}</span></a>` : ''}
+          ${previous ? `<a href="#/question/${encodeURIComponent(previous.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">← Previous question</span><span class="mt-2 block truncate font-mono text-sm font-bold transition group-hover:text-ember">${escapeHtml(previous.filename)}</span></a>` : '<div></div>'}
+          ${next ? `<a href="#/question/${encodeURIComponent(next.id)}" class="group rounded-2xl border border-slate-200 bg-white p-5 text-right shadow-sm transition hover:border-blue-200 hover:shadow-lift"><span class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">Next question →</span><span class="mt-2 block truncate font-mono text-sm font-bold transition group-hover:text-ember">${escapeHtml(next.filename)}</span></a>` : ''}
         </nav>
       </section>`;
   }
@@ -473,7 +474,7 @@
             <p class="text-xs font-extrabold uppercase tracking-widest text-ember">${escapeHtml(question.chapter)} · ${escapeHtml(question.chapterTitle)} · ${escapeHtml(question.topic)}</p>
             <h2 class="mt-3 font-mono text-2xl font-bold">${index + 1}. ${escapeHtml(question.filename)}</h2>
             <h3 class="mt-7 text-xs font-extrabold uppercase tracking-widest">Question</h3>
-            <div class="prompt-text mt-3 rounded-xl bg-orange-50 p-5 text-sm leading-6">${escapeHtml(question.question)}</div>
+            <div class="prompt-text mt-3 rounded-xl bg-blue-50 p-5 text-sm leading-6">${escapeHtml(question.question)}</div>
             <h3 class="mt-7 text-xs font-extrabold uppercase tracking-widest">Solution</h3>
             <div class="mt-3">${solutionBlock(question)}</div>
           </article>`).join('')}</div>
@@ -495,7 +496,7 @@
             <p class="text-xs font-extrabold uppercase tracking-widest text-ember">${escapeHtml(exercise.chapter)} · ${escapeHtml(exercise.chapterTitle)} · ${escapeHtml(exercise.topic)} · Source page ${exercise.pdfPage}</p>
             <h2 class="mt-3 font-mono text-2xl font-bold">${exerciseIndex + 1}. ${escapeHtml(exercise.title)}</h2>
             <h3 class="mt-7 text-xs font-extrabold uppercase tracking-widest">Exercise</h3>
-            <div class="prompt-text mt-3 rounded-xl bg-orange-50 p-5 text-sm leading-6">${escapeHtml(exercise.prompt)}</div>
+            <div class="prompt-text mt-3 rounded-xl bg-blue-50 p-5 text-sm leading-6">${escapeHtml(exercise.prompt)}</div>
             <h3 class="mt-7 text-xs font-extrabold uppercase tracking-widest">Solution</h3>
             <div class="mt-3 space-y-4">${exercise.solutionVariants.map((variant, index) => `
                   <div class="solution-variant">
@@ -510,7 +511,7 @@
 
   function renderNotFound() {
     document.title = 'Not found · Java Practice Library';
-    app.innerHTML = `<section class="mx-auto grid min-h-[70vh] max-w-3xl place-items-center px-5 text-center"><div><p class="font-mono text-7xl font-bold text-orange-200">404</p><h1 class="mt-4 text-3xl font-extrabold">Question not found</h1><p class="mt-3 text-slate-500">That exercise may have moved or the link is incomplete.</p><a href="#/questions" class="mt-7 inline-block rounded-xl bg-ink px-5 py-3 text-sm font-bold text-white">Browse questions</a></div></section>`;
+    app.innerHTML = `<section class="mx-auto grid min-h-[70vh] max-w-3xl place-items-center px-5 text-center"><div><p class="font-mono text-7xl font-bold text-blue-200">404</p><h1 class="mt-4 text-3xl font-extrabold">Question not found</h1><p class="mt-3 text-slate-500">That exercise may have moved or the link is incomplete.</p><a href="#/questions" class="mt-7 inline-block rounded-xl bg-ink px-5 py-3 text-sm font-bold text-white">Browse questions</a></div></section>`;
   }
 
   function parseRoute() {
@@ -584,7 +585,7 @@
       const darkMode = !document.documentElement.classList.contains('dark');
       document.documentElement.classList.toggle('dark', darkMode);
       target.setAttribute('aria-label', darkMode ? 'Use light mode' : 'Use dark mode');
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', darkMode ? '#020617' : '#0f172a');
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', darkMode ? '#000000' : '#f5f5f7');
       try {
         localStorage.setItem('java-practice-theme', darkMode ? 'dark' : 'light');
       } catch (_) {}

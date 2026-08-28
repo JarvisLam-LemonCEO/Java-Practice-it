@@ -4,12 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Private Java study library with questions, textbook exercises, and matched solutions." />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#f5f5f7" />
     <title>Java Practice Library</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <script>
       (() => {
         try {
@@ -17,7 +14,7 @@
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           const darkMode = savedTheme ? savedTheme === 'dark' : prefersDark;
           document.documentElement.classList.toggle('dark', darkMode);
-          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', darkMode ? '#020617' : '#0f172a');
+          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', darkMode ? '#000000' : '#f5f5f7');
         } catch (_) {}
       })();
     </script>
@@ -28,17 +25,17 @@
         theme: {
           extend: {
             colors: {
-              ink: '#0f172a',
-              cream: '#f7f5ef',
-              ember: '#ea580c',
-              mist: '#e8eef2'
+              ink: '#1d1d1f',
+              cream: '#f5f5f7',
+              ember: '#0071e3',
+              mist: '#e8e8ed'
             },
             fontFamily: {
-              sans: ['Manrope', 'ui-sans-serif', 'system-ui'],
-              mono: ['DM Mono', 'ui-monospace', 'monospace']
+              sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'SF Pro Display', 'Segoe UI', 'sans-serif'],
+              mono: ['SFMono-Regular', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'monospace']
             },
             boxShadow: {
-              lift: '0 18px 45px -24px rgba(15, 23, 42, .28)'
+              lift: '0 20px 60px -36px rgba(0, 0, 0, .32)'
             }
           }
         }
@@ -47,40 +44,37 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body class="min-h-screen bg-cream font-sans text-ink antialiased">
-    <div class="grain" aria-hidden="true"></div>
     <header id="site-header" class="sticky top-0 z-40 border-b border-slate-200/80 bg-cream/95 backdrop-blur-xl">
-      <div class="bg-amber-100 px-4 py-1.5 text-center text-[10px] font-extrabold uppercase tracking-[.16em] text-amber-900">Private study copy · Keep this project and its source material private</div>
-      <nav class="mx-auto flex max-w-7xl flex-col items-stretch gap-3 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-8" aria-label="Main navigation">
-        <a href="#/" class="group flex items-center gap-3" aria-label="Java Practice Library home">
-          <span class="grid h-10 w-10 place-items-center rounded-xl bg-ink text-sm font-extrabold text-white shadow-lg shadow-slate-900/15 transition-transform group-hover:-rotate-3">J</span>
-          <span>
-            <span class="block text-sm font-extrabold leading-none tracking-tight">JAVA PRACTICE</span>
-            <span class="mt-1 block text-[10px] font-bold uppercase tracking-[.2em] text-slate-500">Solution Library</span>
-          </span>
+      <nav class="apple-nav mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+        <a href="#/" class="brand-mark group flex shrink-0 items-center gap-2.5" aria-label="Java Practice Library home">
+          <span class="brand-glyph grid h-7 w-7 place-items-center rounded-lg text-[13px] font-semibold">J</span>
+          <span class="hidden text-sm font-semibold tracking-[-.01em] sm:block">Java Practice</span>
         </a>
-        <div class="grid grid-cols-5 items-center gap-1 rounded-2xl border border-slate-200 bg-white/70 p-1 shadow-sm sm:flex sm:rounded-full">
-          <a data-nav="home" href="#/" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Home</a>
-          <a data-nav="questions" href="#/questions" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Questions</a>
-          <a data-nav="exercises" href="#/exercises" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Exercises</a>
-          <a data-nav="solutions" href="#/solutions" class="nav-link rounded-xl px-2 py-2 text-center text-xs font-bold transition sm:rounded-full sm:px-4 sm:text-sm">Solutions</a>
-          <button type="button" data-action="toggle-theme" class="nav-link grid h-9 place-items-center rounded-xl px-2 transition sm:w-10 sm:rounded-full" aria-label="Toggle dark mode" title="Toggle light or dark mode">
-            <svg class="h-4 w-4 dark:hidden" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
-            <svg class="hidden h-4 w-4 dark:block" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
-          </button>
+
+        <div class="nav-cluster flex min-w-0 items-center gap-0.5 overflow-x-auto" aria-label="Library sections">
+          <a data-nav="home" href="#/" class="nav-link whitespace-nowrap px-3 py-2 text-xs font-medium transition sm:text-sm">Home</a>
+          <a data-nav="questions" href="#/questions" class="nav-link whitespace-nowrap px-3 py-2 text-xs font-medium transition sm:text-sm">Questions</a>
+          <a data-nav="exercises" href="#/exercises" class="nav-link whitespace-nowrap px-3 py-2 text-xs font-medium transition sm:text-sm">Exercises</a>
+          <a data-nav="solutions" href="#/solutions" class="nav-link whitespace-nowrap px-3 py-2 text-xs font-medium transition sm:text-sm">Solutions</a>
         </div>
+
+        <button type="button" data-action="toggle-theme" class="theme-toggle grid h-8 w-8 shrink-0 place-items-center rounded-full transition" aria-label="Toggle dark mode" title="Toggle light or dark mode">
+          <svg class="h-4 w-4 dark:hidden" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          <svg class="hidden h-4 w-4 dark:block" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        </button>
       </nav>
     </header>
 
-    <main id="app" class="relative min-h-[calc(100vh-72px)]" tabindex="-1"></main>
+    <main id="app" class="relative min-h-[calc(100vh-48px)]" tabindex="-1"></main>
 
     <footer id="site-footer" class="border-t border-slate-200 bg-white/50">
-      <div class="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      <div class="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-8 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <p>Java Practice Library · Built for focused study.</p>
         <p id="footer-count"></p>
       </div>
     </footer>
 
-    <div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 translate-y-4 rounded-full bg-ink px-5 py-3 text-sm font-bold text-white opacity-0 shadow-xl transition-all" role="status" aria-live="polite"></div>
+    <div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2 translate-y-4 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white opacity-0 shadow-xl transition-all" role="status" aria-live="polite"></div>
 
     <script src="/data/questions.js"></script>
     <script src="/data/exercises.js"></script>
